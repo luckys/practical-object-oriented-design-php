@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Chapter2\Section1;
+namespace App\Chapter2\Section1\Example1;
 
 class Gear1
 {

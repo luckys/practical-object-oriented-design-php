@@ -1,0 +1,42 @@
+Depend on Behavior, Not Data
+
+Data is held in an instance
+variable and can be anything from a simple string or a complex hash. Data can be
+accessed in one of two ways; you can refer directly to the instance variable or you can
+wrap the instance variable in an accessor method.
+
+However, since @data contains a complicated data structure, just hiding the
+instance variable is not enough. The data method merely returns the array. To do
+anything useful, each sender of data must have complete knowledge of what piece of
+data is at which index in the array
+
+The diameters method knows not only how to calculate diameters, but also
+where to find rims and tires in the array. It explicitly knows that if it iterates over data
+that rims are at [0] and tires are at [1].
+
+It depends upon the array’s structure. If that structure changes, then this code
+must change. When you have data in an array it’s not long before you have references to the array’s structure all over. The references are leaky. They escape encapsulation and insinuate themselves throughout the code. They are not DRY. The
+knowledge that rims are at [0] should not be duplicated; it should be known in just
+one place
+
+This simple example is bad enough; imagine the consequences if data returned
+an array of hashes that were referenced in many places. A change to its structure
+would cascade throughout your code; each change represents an opportunity to create
+a bug so stealthy that your attempts to find it will make you cry.
+
+The diameters method above now has no knowledge of the internal structure of the
+array. All diameters knows is that the message wheels returns an enumerable and
+that each enumerated thing responds to rim and tire. What were once references to
+cell[1] have been transformed into message sends to wheel.tire
+
+All knowledge of the structure of the incoming array has been isolated inside the
+wheelify method. The wheelify method contains the only bit of code that understands
+the structure of the incoming array. If the input changes, the code will change in
+just this one place.
+
+This style of code allows you to protect against changes in externally owned data
+structures and to make your code more readable and intention revealing.
+
+Separating iteration from the action that’s being performed on each element is a
+common case of multiple responsibility that is easy to recognize. In other cases the
+problem is not so obvious.

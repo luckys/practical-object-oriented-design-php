@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Chapter2\Section1;
+namespace App\Chapter2\Section1\Example2;
 
-class Gear1
+class Gear2
 {
     private $chainring;
     private $cog;
@@ -24,6 +24,10 @@ class Gear1
         $this->tire = $tire;
     }
 
+    /**
+     * ALWAYS WRAP INSTANCE VARIABLES IN ACCESSOR METHOD INSTEAD OF DIRECTLY
+     * REFERRING TO VARIABLE
+     */
 
     /**
      * @return mixed
@@ -64,6 +68,17 @@ class Gear1
 
     public function gearInches()
     {
-        return $this->ratio() * ($this->getRim() + ($this->getTire() * 2));
+        return $this->ratio() * $this->diameter();
+    }
+
+    /**
+     * @return float|int|mixed
+     */
+    private function diameter()
+    {
+        return ($this->getRim() + ($this->getTire() * 2));
     }
 }
+
+$gear = new Gear2(52, 11, 26, 1.5);
+$newRatio = new Gear2(52, 11); // ArgumentError A Wheel class is needed
